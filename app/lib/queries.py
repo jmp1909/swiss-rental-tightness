@@ -70,13 +70,23 @@ def rent_latest(room_cat: str = "Totale") -> pd.DataFrame:
         """
         WITH latest AS (
             SELECT kt_id, max(year) AS year FROM fact_rent WHERE room_count_cat = ? AND avg_rent_chf IS NOT NULL GROUP BY kt_id
+        ),
+        five_yr_ago AS (
+            SELECT r.kt_id, r.avg_rent_chf AS rent_5y_ago
+            FROM fact_rent r
+            JOIN latest l ON l.kt_id = r.kt_id AND r.year = l.year - 5 AND r.room_count_cat = ?
         )
-        SELECT c.kt_id, c.kt_abbr, c.kt_name_de, r.year, r.avg_rent_chf
+        SELECT c.kt_id, c.kt_abbr, c.kt_name_de, r.year, r.avg_rent_chf,
+               f.rent_5y_ago,
+               CASE WHEN f.rent_5y_ago > 0
+                    THEN (r.avg_rent_chf - f.rent_5y_ago) * 100.0 / f.rent_5y_ago
+                    ELSE NULL END AS rent_growth_5y_pct
         FROM latest l
         JOIN fact_rent r ON r.kt_id = l.kt_id AND r.year = l.year AND r.room_count_cat = ?
         JOIN dim_canton c ON c.kt_id = l.kt_id
+        LEFT JOIN five_yr_ago f ON f.kt_id = l.kt_id
         """,
-        [room_cat, room_cat],
+        [room_cat, room_cat, room_cat],
     ).df()
 
 
@@ -163,7 +173,45 @@ def canton_detail(kt_id: int) -> dict[str, pd.DataFrame]:
             "SELECT year, immigration, emigration, net_migration FROM fact_migration WHERE kt_id = ? ORDER BY year",
             [kt_id],
         ).df(),
+        "new_dwellings": con.execute(
+            "SELECT year, new_dwellings FROM fact_new_dwellings WHERE kt_id = ? ORDER BY year", [kt_id]
+        ).df(),
     }
+
+
+@st.cache_data
+def new_dwellings_supply() -> pd.DataFrame:
+    """New dwellings built in the trailing 5 years, per 1,000 residents --
+    the supply-side counterpart to pop_growth_5y_pct. Uses each canton's own
+    latest available new-dwellings year as the window end, and that same
+    year's population as the denominator."""
+    return get_conn().execute(
+        """
+        WITH latest AS (
+            SELECT kt_id, max(year) AS year FROM fact_new_dwellings WHERE new_dwellings IS NOT NULL GROUP BY kt_id
+        ),
+        trailing_5y AS (
+            SELECT d.kt_id, sum(d.new_dwellings) AS new_dwellings_5y
+            FROM fact_new_dwellings d
+            JOIN latest l ON l.kt_id = d.kt_id AND d.year BETWEEN l.year - 4 AND l.year
+            GROUP BY d.kt_id
+        ),
+        pop AS (
+            SELECT p.kt_id, p.year, p.population_end
+            FROM fact_population p
+            JOIN latest l ON l.kt_id = p.kt_id AND p.year = l.year
+        )
+        SELECT c.kt_id, c.kt_abbr, c.kt_name_de, l.year,
+               t.new_dwellings_5y, pop.population_end,
+               CASE WHEN pop.population_end > 0
+                    THEN t.new_dwellings_5y * 1000.0 / pop.population_end
+                    ELSE NULL END AS new_dwellings_per_1000_5y
+        FROM latest l
+        JOIN trailing_5y t ON t.kt_id = l.kt_id
+        JOIN dim_canton c ON c.kt_id = l.kt_id
+        LEFT JOIN pop ON pop.kt_id = l.kt_id
+        """
+    ).df()
 
 
 @st.cache_data
@@ -182,6 +230,31 @@ def district_vacancy_latest(kt_id: int) -> pd.DataFrame:
         ORDER BY f.vacancy_rate_pct DESC
         """,
         [kt_id],
+    ).df()
+
+
+@st.cache_data
+def districts() -> pd.DataFrame:
+    """All districts with their parent canton, for the district picker --
+    label disambiguates districts that share a name across cantons."""
+    df = get_conn().execute(
+        """
+        SELECT d.bezirk_id, d.bezirk_name, d.kt_id, c.kt_abbr, c.kt_name_de
+        FROM dim_district d JOIN dim_canton c ON c.kt_id = d.kt_id
+        ORDER BY d.bezirk_name
+        """
+    ).df()
+    df["label"] = df["bezirk_name"] + " (" + df["kt_abbr"] + ")"
+    return df
+
+
+@st.cache_data
+def district_vacancy_trend(bezirk_id: str) -> pd.DataFrame:
+    """A single district's own vacancy history -- this is real district-grain
+    data (1995-2025), unlike the canton-context signals elsewhere."""
+    return get_conn().execute(
+        "SELECT year, vacancy_rate_pct, vacant_count FROM fact_vacancy_district WHERE bezirk_id = ? ORDER BY year",
+        [bezirk_id],
     ).df()
 
 

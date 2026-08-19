@@ -12,31 +12,61 @@ ui.inject_sidebar_toggle_style()
 st.title("Market Tightness Composite")
 
 st.warning(
-    "This is a heuristic index built for this project, not a validated economic index. "
-    "It combines three z-scored signals -- inverted vacancy rate, 5-year population growth, and "
-    "average rent level -- using the weights below. Treat it as a starting point for comparison, "
-    "not a definitive ranking.",
+    "This is a heuristic index built for this project, not a validated economic index. It "
+    "combines four normalized signals -- inverted vacancy, a population-growth-vs-new-construction "
+    "demand/supply gap, rent level, and rent growth -- using the weights and method below. Treat it "
+    "as a starting point for comparison, not a definitive ranking.",
     icon="⚠️",
 )
 
 level = st.radio("Geography", options=["Canton (26)", "District (143)"], horizontal=True)
+
+METHOD_HELP = {
+    "zscore": "Standard deviations from the mean. Standard, but one extreme canton/district can pull "
+              "everyone else's score around.",
+    "percentile": "Rank-based (0-100th percentile, recentred). Robust to a single outlier, but "
+                  "discards how *far* apart geographies actually are.",
+}
+
+st.subheader("Normalization method")
+st.caption(
+    "z-score and percentile rank can genuinely disagree, especially with only 26 cantons -- pick "
+    "independently for each geography level to compare."
+)
+# A widget that's only rendered in one branch of an if/else doesn't reliably
+# keep its value in Streamlit when that branch isn't taken -- so the "current
+# choice per level" is tracked explicitly here instead of trusting the
+# widget's own key-based persistence across runs where it isn't rendered.
+st.session_state.setdefault("tightness_method_canton", "zscore")
+st.session_state.setdefault("tightness_method_district", "zscore")
+state_key = "tightness_method_canton" if level == "Canton (26)" else "tightness_method_district"
+
+method = st.radio(
+    f"Method for {level}", options=list(scoring.NORMALIZATION_METHODS),
+    horizontal=True,
+    index=scoring.NORMALIZATION_METHODS.index(st.session_state[state_key]),
+    captions=[METHOD_HELP[m] for m in scoring.NORMALIZATION_METHODS],
+    key=f"method_widget_{state_key}",
+)
+st.session_state[state_key] = method
 
 st.subheader("Weights")
 st.caption(
     "Weights don't need to add up to anything in particular -- they're normalized automatically. "
     "Set a weight to 0 to drop that signal entirely."
 )
-col1, col2, col3 = st.columns(3)
-w_vacancy = col1.slider("Vacancy rate (inverted)", 0.0, 3.0, 1.0, 0.1)
-w_pop_growth = col2.slider("Population growth", 0.0, 3.0, 1.0, 0.1)
-w_rent = col3.slider("Rent level", 0.0, 3.0, 1.0, 0.1)
+col1, col2, col3, col4 = st.columns(4)
+w_vacancy = col1.slider("Vacancy (inverted)", 0.0, 3.0, 1.0, 0.1)
+w_demand_supply = col2.slider("Demand/supply gap", 0.0, 3.0, 1.0, 0.1)
+w_rent_level = col3.slider("Rent level", 0.0, 3.0, 1.0, 0.1)
+w_rent_growth = col4.slider("Rent growth (5y)", 0.0, 3.0, 1.0, 0.1)
 
-if w_vacancy == w_pop_growth == w_rent == 0:
+if w_vacancy == w_demand_supply == w_rent_level == w_rent_growth == 0:
     st.error("At least one weight must be above 0.")
     st.stop()
 
 if level == "Canton (26)":
-    df = scoring.compute_tightness_index(w_vacancy, w_pop_growth, w_rent)
+    df = scoring.compute_tightness_index(w_vacancy, w_demand_supply, w_rent_level, w_rent_growth, method=method)
 
     st.plotly_chart(
         charts.ranked_bar(
@@ -50,8 +80,9 @@ if level == "Canton (26)":
     st.subheader("Score components")
     st.dataframe(
         df[[
-            "kt_abbr", "kt_name_de", "vacancy_rate_pct", "pop_growth_5y_pct", "avg_rent_chf",
-            "z_vacancy_inv", "z_pop_growth", "z_rent", "tightness_score",
+            "kt_abbr", "kt_name_de", "vacancy_rate_pct", "pop_growth_5y_pct",
+            "avg_rent_chf", "rent_growth_5y_pct",
+            "z_vacancy_inv", "z_demand_supply_gap", "z_rent_level", "z_rent_growth", "tightness_score",
         ]],
         use_container_width=True,
         hide_index=True,
@@ -59,15 +90,15 @@ if level == "Canton (26)":
 
 else:
     st.info(
-        "BFS doesn't publish rent or population/migration below canton level (see Data Sources & "
-        "Caveats), so the population-growth and rent signals here are each district's **parent "
-        "canton's** value, shared by every district in that canton. Only vacancy is a genuine "
-        "district-level signal -- if you want a purely district-resolution score, set the other "
-        "two weights to 0.",
+        "BFS doesn't publish rent, population, or construction data below canton level (see Data "
+        "Sources & Caveats), so the demand/supply, rent-level, and rent-growth signals here are each "
+        "district's **parent canton's** value, shared by every district in that canton. Only vacancy "
+        "is a genuine district-level signal -- if you want a purely district-resolution score, set "
+        "the other three weights to 0.",
         icon="ℹ️",
     )
 
-    df = scoring.compute_district_tightness_index(w_vacancy, w_pop_growth, w_rent)
+    df = scoring.compute_district_tightness_index(w_vacancy, w_demand_supply, w_rent_level, w_rent_growth, method=method)
 
     top_n = 15
     tightest = df.head(top_n)
@@ -94,8 +125,9 @@ else:
     st.subheader("Score components (all 143 districts)")
     st.dataframe(
         df[[
-            "bezirk_name", "kt_abbr", "vacancy_rate_pct",
-            "z_vacancy_inv", "z_pop_growth_canton_context", "z_rent_canton_context", "tightness_score",
+            "bezirk_name", "kt_abbr", "vacancy_rate_pct", "z_vacancy_inv",
+            "z_demand_supply_gap_canton_context", "z_rent_level_canton_context",
+            "z_rent_growth_canton_context", "tightness_score",
         ]],
         use_container_width=True,
         hide_index=True,

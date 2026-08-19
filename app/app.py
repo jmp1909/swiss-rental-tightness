@@ -32,7 +32,7 @@ st.markdown(
 - **Geographic Overview** — latest vacancy rate by canton or district, on a map and in a sortable table.
 - **Market Tightness Composite** — a heuristic ranking combining vacancy, population growth, and rent.
 - **Trends Over Time** — per-canton time series for vacancy, rent, and population.
-- **Canton Detail** — full drill-down into one canton across every loaded metric.
+- **Geography Detail** — full drill-down into one canton, or one district (with its parent canton as context).
 - **Data Sources & Caveats** — exactly where every number comes from, and where the limits are.
 """
 )

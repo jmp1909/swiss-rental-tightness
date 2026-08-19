@@ -11,6 +11,7 @@ from .db import get_connection, init_schema
 from .sources import (
     mietpreisindex_bfs,
     migration_bfs,
+    new_dwellings_bfs,
     population_bfs,
     rent_bfs,
     vacancy_bfs,
@@ -21,6 +22,7 @@ SOURCES = {
     "rent_bfs": rent_bfs,
     "population_bfs": population_bfs,
     "migration_bfs": migration_bfs,
+    "new_dwellings_bfs": new_dwellings_bfs,
     "vacancy_bfs": vacancy_bfs,
     "vacancy_district_bfs": vacancy_district_bfs,
     "mietpreisindex_bfs": mietpreisindex_bfs,

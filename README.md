@@ -42,6 +42,7 @@ To run just one source: `python -m ingest.run_all --source vacancy_bfs`.
 | `fact_rent` | canton x year x room-count | BFS Strukturerhebung, 2010-2024 |
 | `fact_population` | canton x year | BFS PxWeb, 1971-2024 |
 | `fact_migration` | canton x year | BFS PxWeb, 1971-2024 |
+| `fact_new_dwellings` | canton x year | BFS PxWeb, 2013-2024 |
 | `fact_mietpreisindex_national` | (unpopulated) | see limitations below |
 | `_ingest_log` | 1 row per ingestion run per source | audit trail |
 
@@ -51,11 +52,12 @@ See [`DATA_AUDIT.md`](DATA_AUDIT.md) for exact source URLs, access methods, and 
 
 1. **Geographic Overview** -- choropleth map (canton or district toggle) + sortable table of the
    latest snapshot.
-2. **Market Tightness Composite** -- a heuristic ranking (z-scored vacancy/growth/rent), explicitly
-   labeled as a heuristic, not a validated economic index.
+2. **Market Tightness Composite** -- a heuristic ranking combining four adjustable-weight signals
+   (vacancy, demand/supply gap, rent level, rent growth), with a choice of normalization method
+   (z-score or percentile rank) selectable independently for cantons and districts.
 3. **Trends Over Time** -- per-canton time series, canton multiselect.
-4. **Canton Detail** -- every metric for one selected canton, plus a district-level vacancy
-   breakdown within it.
+4. **Geography Detail** -- full drill-down into one canton, or one district (with its parent
+   canton's data shown as context, since BFS doesn't publish most series below canton level).
 5. **Data Sources & Caveats** -- renders `DATA_AUDIT.md` in-app, plus the live ingestion log.
 
 ## Limitations (read before drawing conclusions)
@@ -77,8 +79,9 @@ See [`DATA_AUDIT.md`](DATA_AUDIT.md) for exact source URLs, access methods, and 
   the three series don't share a common start year, so any cross-series analysis implicitly uses
   each series' own available range.
 - **The "market tightness" composite score is a heuristic built for this project**, not a
-  peer-reviewed or industry-standard index. It's a transparent average of three z-scored signals,
-  intended as a starting point for comparison, not a definitive ranking.
+  peer-reviewed or industry-standard index. It's a transparent, weighted combination of four
+  normalized signals, intended as a starting point for comparison, not a definitive ranking -- see
+  the Market Tightness Composite page for the full methodology.
 - **`dim_municipality` doesn't exist** -- adding true municipality-level vacancy (see above) would
   need a merger-aware version of it, which is out of scope for now.
 
@@ -91,6 +94,7 @@ swiss-rental-tightness/
     cantons.csv               # static canton dimension seed
     districts.csv              # static district (Bezirk) dimension seed, extracted from SDMX metadata
     cantons.geojson            # canton boundary geometry for the choropleth (BFS-derived, see DATA_AUDIT.md)
+    districts.geojson          # district boundary geometry, matched by official BFS district number
   ingest/
     db.py                      # DuckDB schema + connection helper
     http.py                    # cached fetch helpers (GET and POST)

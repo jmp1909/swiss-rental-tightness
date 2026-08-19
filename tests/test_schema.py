@@ -13,6 +13,7 @@ FACT_TABLES_WITH_CANTON = [
     "fact_rent",
     "fact_population",
     "fact_migration",
+    "fact_new_dwellings",
 ]
 
 

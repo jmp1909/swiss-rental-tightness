@@ -73,6 +73,15 @@ CREATE TABLE IF NOT EXISTS fact_migration (
     PRIMARY KEY (kt_id, year)
 );
 
+CREATE TABLE IF NOT EXISTS fact_new_dwellings (
+    kt_id              SMALLINT NOT NULL,
+    year               SMALLINT NOT NULL,
+    new_dwellings      INTEGER,
+    source_dataset     VARCHAR,
+    loaded_at          TIMESTAMP,
+    PRIMARY KEY (kt_id, year)
+);
+
 CREATE TABLE IF NOT EXISTS fact_mietpreisindex_national (
     period          VARCHAR NOT NULL,
     index_value     DOUBLE,
