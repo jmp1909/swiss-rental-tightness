@@ -11,6 +11,13 @@ statistics, pulled programmatically via a real bulk download or documented API, 
   no authentication.
 - **Granularity**: canton (26) and district/Bezirk (143 with current data, of 155 known codes).
   Municipality-level is available in the same source but not loaded -- see *Limitations* below.
+- **Nine cantons have no Bezirk subdivision** -- Appenzell Innerrhoden, Basel-Stadt, Genève,
+  Glarus, Neuchâtel, Nidwalden, Obwalden, Uri, and Zug. In BFS's own hierarchy, each of these
+  appears as a single district-level entry named "Kanton X" covering the whole canton. Any
+  district-level ranking or map (including the Market Tightness Composite) shows these as one
+  entry competing alongside genuinely sub-canton districts like Bezirk Zürich or Bezirk Horgen --
+  the number is real, it just isn't more granular than the canton-level figure already shown
+  elsewhere in the app.
 - **Coverage**: 1995-2025, annual, reference date June 1.
 - **Licence**: Swiss federal open data terms.
 
@@ -59,10 +66,6 @@ statistics, pulled programmatically via a real bulk download or documented API, 
 
 ## Limitations
 
-- **District-level signals other than vacancy are borrowed from the parent canton.** BFS doesn't
-  publish rent, population, or construction data below canton level, so the tightness score's
-  demand/supply, rent-level, and rent-growth components use each district's parent canton's value
-  for every district in that canton -- flagged in the app, not hidden.
 - **Municipality-level vacancy isn't loaded**, though the source supports it. Swiss municipalities
   merge often enough (hundreds of historical codes in the source, many now defunct) that a correct
   municipality dimension needs merger-aware historization -- out of scope for now.
@@ -70,5 +73,34 @@ statistics, pulled programmatically via a real bulk download or documented API, 
   smoothed. The national rent index (Mietpreisindex, part of the Swiss CPI) isn't included: no
   bulk/API source for it could be confirmed, and it's published nationally only in any case, so it
   couldn't support cantonal comparison even if it were wired up.
-- **The tightness score is a heuristic**, not a validated economic index -- see the Market
-  Tightness Composite page for the full methodology and adjustable weights.
+- **The tightness score is a heuristic**, not a validated economic index -- see *Methodology*
+  below.
+
+## Methodology: Market Tightness Score
+
+Not a validated economic index -- a transparent, adjustable combination of four signals, each
+normalized then weighted. Higher score = tighter (more landlord-favorable) market.
+
+- **Vacancy (inverted)**: low vacancy = tight.
+- **Demand/supply gap**: population growth normalized minus new-dwellings-per-capita normalized.
+  Population growth alone conflates demand pressure with tightness -- a fast-growing canton that's
+  also building fast isn't necessarily tight. The gap nets out the supply response.
+- **Rent level**: high rent can mean "tight" or just "affluent canton" -- kept as a signal, not
+  dropped, but paired with rent growth below rather than relied on alone.
+- **Rent growth (5y)**: a cleaner tightness signal than level in principle, though it inherits any
+  BFS methodology-break noise around 2015/2018.
+
+`score = sum(weight_i x signal_i) / sum(weight_i)` -- weights don't need to sum to anything in
+particular; setting one to 0 drops that signal entirely. Adjustable live in the app, independently
+for cantons and districts.
+
+**Normalization**: two methods are offered, selectable independently for cantons vs. districts.
+*Z-score* (standard deviations from the mean) is standard but sensitive to outliers with only 26
+cantons. *Percentile rank* is robust to a single outlier but discards how far apart geographies
+actually are. Neither is "more correct" -- they can genuinely disagree, which is exactly why both
+are exposed rather than picking one silently.
+
+**District-level signals other than vacancy are borrowed from the parent canton.** BFS doesn't
+publish rent, population, or construction data below canton level, so the demand/supply,
+rent-level, and rent-growth components use each district's parent canton's value for every
+district in that canton -- flagged in the app via `_canton_context` labeling, not hidden.

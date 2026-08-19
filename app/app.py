@@ -37,8 +37,4 @@ st.markdown(
 """
 )
 
-st.info(
-    "This is a portfolio/analysis project built entirely on public BFS open data. "
-    "See the Data Sources & Caveats page before drawing conclusions from any single number.",
-    icon="ℹ️",
-)
+st.caption("Portfolio/analysis project on public BFS open data -- see Data Sources & Caveats before drawing conclusions.")

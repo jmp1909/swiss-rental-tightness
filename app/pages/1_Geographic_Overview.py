@@ -41,9 +41,9 @@ else:
         width='stretch',
     )
     st.caption(
-        "143 of 155 known districts have current data -- the rest are 'Bezirksfreies Gebiet' "
-        "placeholder codes (land not assigned to any district in that canton), not former "
-        "districts, and don't have boundary geometry of their own."
+        "143 of 155 known districts shown (12 are placeholder codes with no data). Nine cantons "
+        "have no Bezirk subdivisions and appear as a single canton-wide region. Details: Data "
+        "Sources & Caveats."
     )
 
 st.subheader("Combined latest snapshot")

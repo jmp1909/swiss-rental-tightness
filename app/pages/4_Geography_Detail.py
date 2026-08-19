@@ -88,12 +88,11 @@ else:
     row = all_districts.loc[all_districts["label"] == label].iloc[0]
     bezirk_id, bezirk_name, kt_id, kt_name = row["bezirk_id"], row["bezirk_name"], int(row["kt_id"]), row["kt_name_de"]
 
-    st.info(
-        f"Only vacancy is genuine district-level data. The other charts below show **{kt_name}'s** "
-        "(this district's parent canton) own history as context, since BFS doesn't publish rent, "
-        "population, or construction data below canton level -- see Data Sources & Caveats.",
-        icon="ℹ️",
-    )
+    st.caption(f"Only vacancy is genuine district data -- other charts show {kt_name} as context. Details: Data Sources & Caveats.")
+
+    is_single_district_canton = (all_districts["kt_id"] == kt_id).sum() == 1
+    if is_single_district_canton:
+        st.caption(f"Note: {kt_name} has no Bezirk subdivisions -- this entry is the whole canton, not a smaller area.")
 
     vac_trend = queries.district_vacancy_trend(bezirk_id)
     st.subheader(f"{bezirk_name} -- vacancy rate (district-level, %)")
