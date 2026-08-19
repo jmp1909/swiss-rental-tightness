@@ -24,7 +24,7 @@ st.plotly_chart(
         queries.vacancy_trend(kt_ids), x="year", y="vacancy_rate_pct", color="kt_abbr",
         title="Vacancy rate over time (%)",
     ),
-    use_container_width=True,
+    width='stretch',
 )
 
 st.plotly_chart(
@@ -33,7 +33,7 @@ st.plotly_chart(
         title="Average rent over time (CHF/month, all room sizes) -- discrete survey-wave markers, not interpolated",
         markers=True,
     ),
-    use_container_width=True,
+    width='stretch',
 )
 st.caption(
     "Rent points come from the BFS Strukturerhebung, a rolling structural survey, not a monthly "
@@ -45,5 +45,5 @@ st.plotly_chart(
         queries.population_trend(kt_ids), x="year", y="population_end", color="kt_abbr",
         title="Year-end population over time",
     ),
-    use_container_width=True,
+    width='stretch',
 )

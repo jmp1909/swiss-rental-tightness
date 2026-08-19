@@ -16,4 +16,4 @@ st.markdown(audit_path.read_text(encoding="utf-8"))
 
 st.subheader("Ingestion log (this warehouse)")
 st.caption("Every ingestion run appends a row here -- source, resource URL, rows loaded, status.")
-st.dataframe(queries.ingest_log(), use_container_width=True, hide_index=True)
+st.dataframe(queries.ingest_log(), width='stretch', hide_index=True)

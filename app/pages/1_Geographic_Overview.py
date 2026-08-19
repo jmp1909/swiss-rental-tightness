@@ -27,7 +27,7 @@ if level == "Canton (26)":
             color_scale="RdYlGn_r", label="Vacancy %", level="canton",
             hover_name_col="kt_name_de",
         ),
-        use_container_width=True,
+        width='stretch',
     )
 else:
     dist = queries.district_vacancy_latest_all()
@@ -38,11 +38,12 @@ else:
             color_scale="RdYlGn_r", label="Vacancy %", level="district",
             hover_name_col="bezirk_name",
         ),
-        use_container_width=True,
+        width='stretch',
     )
     st.caption(
-        "143 of 155 known districts have current data -- the rest are historical-only codes from "
-        "before a district reorganization and no longer have matching boundary geometry."
+        "143 of 155 known districts have current data -- the rest are 'Bezirksfreies Gebiet' "
+        "placeholder codes (land not assigned to any district in that canton), not former "
+        "districts, and don't have boundary geometry of their own."
     )
 
 st.subheader("Combined latest snapshot")
@@ -59,7 +60,7 @@ table = (
     )
     .sort_values("vacancy_rate_pct", ascending=False)
 )
-st.dataframe(table, use_container_width=True, hide_index=True)
+st.dataframe(table, width='stretch', hide_index=True)
 st.caption(
     "Each metric uses that source's own latest available year -- vacancy, rent, and population "
     "surveys don't all publish on the same schedule. See Data Sources & Caveats."

@@ -74,7 +74,7 @@ if level == "Canton (26)":
             title="Cantons ranked by composite tightness score (higher = tighter market)",
             color="tightness_score",
         ),
-        use_container_width=True,
+        width='stretch',
     )
 
     st.subheader("Score components")
@@ -84,7 +84,7 @@ if level == "Canton (26)":
             "avg_rent_chf", "rent_growth_5y_pct",
             "z_vacancy_inv", "z_demand_supply_gap", "z_rent_level", "z_rent_growth", "tightness_score",
         ]],
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
     )
 
@@ -111,7 +111,7 @@ else:
                 tightest, x="bezirk_name", y="tightness_score",
                 title=f"{top_n} tightest districts", color="tightness_score",
             ),
-            use_container_width=True,
+            width='stretch',
         )
     with c2:
         st.plotly_chart(
@@ -119,7 +119,7 @@ else:
                 loosest, x="bezirk_name", y="tightness_score",
                 title=f"{top_n} loosest districts", color="tightness_score",
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
     st.subheader("Score components (all 143 districts)")
@@ -129,6 +129,6 @@ else:
             "z_demand_supply_gap_canton_context", "z_rent_level_canton_context",
             "z_rent_growth_canton_context", "tightness_score",
         ]],
-        use_container_width=True,
+        width='stretch',
         hide_index=True,
     )

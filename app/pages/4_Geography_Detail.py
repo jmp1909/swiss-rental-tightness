@@ -24,12 +24,12 @@ if level == "Canton":
     with col1:
         st.plotly_chart(
             charts.line_trend(data["vacancy"], x="year", y="vacancy_rate_pct", color=None, title=f"{name} -- vacancy rate (%)"),
-            use_container_width=True,
+            width='stretch',
         )
     with col2:
         st.plotly_chart(
             charts.line_trend(data["population"], x="year", y="population_end", color=None, title=f"{name} -- year-end population"),
-            use_container_width=True,
+            width='stretch',
         )
 
     st.subheader("Vacancy rate by district")
@@ -44,13 +44,13 @@ if level == "Canton":
                 title=f"{name} -- vacancy rate by district ({latest_district_year}, %)",
                 color="vacancy_rate_pct",
             ),
-            use_container_width=True,
+            width='stretch',
         )
 
     st.subheader("Rent by room count")
     st.plotly_chart(
         charts.line_trend(data["rent"], x="year", y="avg_rent_chf", color="room_count_cat", title=f"{name} -- average rent by room count (CHF)", markers=True),
-        use_container_width=True,
+        width='stretch',
     )
 
     col3, col4 = st.columns(2)
@@ -59,28 +59,28 @@ if level == "Canton":
         mig_df = data["migration"].melt(id_vars="year", value_vars=["immigration", "emigration", "net_migration"], var_name="component", value_name="persons")
         st.plotly_chart(
             charts.line_trend(mig_df, x="year", y="persons", color="component", title=f"{name} -- migration components"),
-            use_container_width=True,
+            width='stretch',
         )
     with col4:
         st.subheader("New dwellings constructed")
         st.plotly_chart(
             charts.line_trend(data["new_dwellings"], x="year", y="new_dwellings", color=None, title=f"{name} -- new dwellings per year"),
-            use_container_width=True,
+            width='stretch',
         )
 
     with st.expander("Raw tables"):
         st.write("Vacancy (canton)")
-        st.dataframe(data["vacancy"], use_container_width=True, hide_index=True)
+        st.dataframe(data["vacancy"], width='stretch', hide_index=True)
         st.write("Vacancy (district, latest year)")
-        st.dataframe(district_df, use_container_width=True, hide_index=True)
+        st.dataframe(district_df, width='stretch', hide_index=True)
         st.write("Rent")
-        st.dataframe(data["rent"], use_container_width=True, hide_index=True)
+        st.dataframe(data["rent"], width='stretch', hide_index=True)
         st.write("Population")
-        st.dataframe(data["population"], use_container_width=True, hide_index=True)
+        st.dataframe(data["population"], width='stretch', hide_index=True)
         st.write("Migration")
-        st.dataframe(data["migration"], use_container_width=True, hide_index=True)
+        st.dataframe(data["migration"], width='stretch', hide_index=True)
         st.write("New dwellings")
-        st.dataframe(data["new_dwellings"], use_container_width=True, hide_index=True)
+        st.dataframe(data["new_dwellings"], width='stretch', hide_index=True)
 
 else:
     all_districts = queries.districts()
@@ -100,10 +100,13 @@ else:
     if vac_trend["vacancy_rate_pct"].notna().any():
         st.plotly_chart(
             charts.line_trend(vac_trend, x="year", y="vacancy_rate_pct", color=None, title=f"{bezirk_name} -- vacancy rate (%)"),
-            use_container_width=True,
+            width='stretch',
         )
     else:
-        st.caption("No vacancy data for this district (likely a historical-only code, see Data Sources & Caveats).")
+        st.caption(
+            "No vacancy data for this entry -- it's a 'Bezirksfreies Gebiet' placeholder code "
+            "(land not assigned to any district), not a real district. See Data Sources & Caveats."
+        )
 
     canton_data = queries.canton_detail(kt_id)
 
@@ -112,27 +115,27 @@ else:
         st.subheader(f"Context: {kt_name} -- population")
         st.plotly_chart(
             charts.line_trend(canton_data["population"], x="year", y="population_end", color=None, title=f"{kt_name} -- year-end population"),
-            use_container_width=True,
+            width='stretch',
         )
     with col2:
         st.subheader(f"Context: {kt_name} -- new dwellings")
         st.plotly_chart(
             charts.line_trend(canton_data["new_dwellings"], x="year", y="new_dwellings", color=None, title=f"{kt_name} -- new dwellings per year"),
-            use_container_width=True,
+            width='stretch',
         )
 
     st.subheader(f"Context: {kt_name} -- rent by room count")
     st.plotly_chart(
         charts.line_trend(canton_data["rent"], x="year", y="avg_rent_chf", color="room_count_cat", title=f"{kt_name} -- average rent by room count (CHF)", markers=True),
-        use_container_width=True,
+        width='stretch',
     )
 
     with st.expander("Raw tables"):
         st.write("Vacancy (this district)")
-        st.dataframe(vac_trend, use_container_width=True, hide_index=True)
+        st.dataframe(vac_trend, width='stretch', hide_index=True)
         st.write(f"Population (context: {kt_name})")
-        st.dataframe(canton_data["population"], use_container_width=True, hide_index=True)
+        st.dataframe(canton_data["population"], width='stretch', hide_index=True)
         st.write(f"Rent (context: {kt_name})")
-        st.dataframe(canton_data["rent"], use_container_width=True, hide_index=True)
+        st.dataframe(canton_data["rent"], width='stretch', hide_index=True)
         st.write(f"New dwellings (context: {kt_name})")
-        st.dataframe(canton_data["new_dwellings"], use_container_width=True, hide_index=True)
+        st.dataframe(canton_data["new_dwellings"], width='stretch', hide_index=True)
