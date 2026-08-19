@@ -1,0 +1,22 @@
+[project]
+name = "swiss-rental-tightness"
+version = "0.1.0"
+description = "Swiss Rental Market Tightness / Vacancy Risk Dashboard"
+requires-python = ">=3.10"
+dependencies = [
+    "duckdb>=1.0.0",
+    "pandas>=2.0.0",
+    "requests>=2.31.0",
+    "openpyxl>=3.1.0",
+    "streamlit>=1.35.0",
+    "plotly>=5.20.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[tool.setuptools]
+packages = ["ingest", "ingest.sources", "app", "app.lib"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,156 @@
+bezirk_id,bezirk_name,kt_abbr
+B_1900,Bezirksfreies Gebiet Aargau,AG
+B_1901,Bezirk Aarau,AG
+B_1902,Bezirk Baden,AG
+B_1903,Bezirk Bremgarten,AG
+B_1904,Bezirk Brugg,AG
+B_1905,Bezirk Kulm,AG
+B_1906,Bezirk Laufenburg,AG
+B_1907,Bezirk Lenzburg,AG
+B_1908,Bezirk Muri,AG
+B_1909,Bezirk Rheinfelden,AG
+B_1910,Bezirk Zofingen,AG
+B_1911,Bezirk Zurzach,AG
+B_1600,Kanton Appenzell Innerrhoden,AI
+B_1501,Bezirk Hinterland,AR
+B_1502,Bezirk Mittelland,AR
+B_1503,Bezirk Vorderland,AR
+B_200,Bezirksfreies Gebiet Bern / Berne,BE
+B_241,Arrondissement administratif Jura bernois,BE
+B_242,Verwaltungskreis Biel/Bienne,BE
+B_243,Verwaltungskreis Seeland,BE
+B_244,Verwaltungskreis Oberaargau,BE
+B_245,Verwaltungskreis Emmental,BE
+B_246,Verwaltungskreis Bern-Mittelland,BE
+B_247,Verwaltungskreis Thun,BE
+B_248,Verwaltungskreis Obersimmental-Saanen,BE
+B_249,Verwaltungskreis Frutigen-Niedersimmental,BE
+B_250,Verwaltungskreis Interlaken-Oberhasli,BE
+B_1301,Bezirk Arlesheim,BL
+B_1302,Bezirk Laufen,BL
+B_1303,Bezirk Liestal,BL
+B_1304,Bezirk Sissach,BL
+B_1305,Bezirk Waldenburg,BL
+B_1200,Kanton Basel-Stadt,BS
+B_1000,Région sans district Fribourg / Freiburg,FR
+B_1001,District de la Broye,FR
+B_1002,District de la Glâne,FR
+B_1003,District de la Gruyère,FR
+B_1004,District de la Sarine,FR
+B_1005,Bezirk See / District du Lac,FR
+B_1006,Bezirk Sense,FR
+B_1007,District de la Veveyse,FR
+B_2500,Canton de Genève,GE
+B_800,Kanton Glarus,GL
+B_1841,Region Albula,GR
+B_1842,Region Bernina,GR
+B_1843,Region Engiadina Bassa / Val Müstair,GR
+B_1844,Region Imboden,GR
+B_1845,Region Landquart,GR
+B_1846,Region Maloja,GR
+B_1847,Region Moesa,GR
+B_1848,Region Plessur,GR
+B_1849,Region Prättigau / Davos,GR
+B_1850,Region Surselva,GR
+B_1851,Region Viamala,GR
+B_2601,District de Delémont,JU
+B_2602,District des Franches-Montagnes,JU
+B_2603,District de Porrentruy,JU
+B_300,Bezirksfreies Gebiet Luzern,LU
+B_311,Wahlkreis Luzern-Stadt,LU
+B_312,Wahlkreis Luzern-Land,LU
+B_313,Wahlkreis Hochdorf,LU
+B_314,Wahlkreis Sursee,LU
+B_315,Wahlkreis Willisau,LU
+B_316,Wahlkreis Entlebuch,LU
+B_2400,Canton de Neuchâtel,NE
+B_700,Kanton Nidwalden,NW
+B_600,Kanton Obwalden,OW
+B_1700,Bezirksfreies Gebiet St. Gallen,SG
+B_1721,Wahlkreis St. Gallen,SG
+B_1722,Wahlkreis Rorschach,SG
+B_1723,Wahlkreis Rheintal,SG
+B_1724,Wahlkreis Werdenberg,SG
+B_1725,Wahlkreis Sarganserland,SG
+B_1726,Wahlkreis See-Gaster,SG
+B_1727,Wahlkreis Toggenburg,SG
+B_1728,Wahlkreis Wil,SG
+B_1400,Bezirksfreies Gebiet Schaffhausen,SH
+B_1401,Bezirk Oberklettgau,SH
+B_1402,Bezirk Reiat,SH
+B_1403,Bezirk Schaffhausen,SH
+B_1404,Bezirk Schleitheim,SH
+B_1405,Bezirk Stein,SH
+B_1406,Bezirk Unterklettgau,SH
+B_1101,Bezirk Gäu,SO
+B_1102,Bezirk Thal,SO
+B_1103,Bezirk Bucheggberg,SO
+B_1104,Bezirk Dorneck,SO
+B_1105,Bezirk Gösgen,SO
+B_1106,Bezirk Wasseramt,SO
+B_1107,Bezirk Lebern,SO
+B_1108,Bezirk Olten,SO
+B_1109,Bezirk Solothurn,SO
+B_1110,Bezirk Thierstein,SO
+B_500,Bezirksfreies Gebiet Schwyz,SZ
+B_501,Bezirk Einsiedeln,SZ
+B_502,Bezirk Gersau,SZ
+B_503,Bezirk Höfe,SZ
+B_504,Bezirk Küssnacht (SZ),SZ
+B_505,Bezirk March,SZ
+B_506,Bezirk Schwyz,SZ
+B_2000,Bezirksfreies Gebiet Thurgau,TG
+B_2011,Bezirk Arbon,TG
+B_2012,Bezirk Frauenfeld,TG
+B_2013,Bezirk Kreuzlingen,TG
+B_2014,Bezirk Münchwilen,TG
+B_2015,Bezirk Weinfelden,TG
+B_2100,Territorio senza distretto Ticino,TI
+B_2101,Distretto di Bellinzona,TI
+B_2102,Distretto di Blenio,TI
+B_2103,Distretto di Leventina,TI
+B_2104,Distretto di Locarno,TI
+B_2105,Distretto di Lugano,TI
+B_2106,Distretto di Mendrisio,TI
+B_2107,Distretto di Riviera,TI
+B_2108,Distretto di Vallemaggia,TI
+B_400,Kanton Uri,UR
+B_2200,Région sans district Vaud,VD
+B_2221,District d'Aigle,VD
+B_2222,District de la Broye-Vully,VD
+B_2223,District du Gros-de-Vaud,VD
+B_2224,District du Jura-Nord vaudois,VD
+B_2225,District de Lausanne,VD
+B_2226,District de Lavaux-Oron,VD
+B_2227,District de Morges,VD
+B_2228,District de Nyon,VD
+B_2229,District de l'Ouest lausannois,VD
+B_2230,District de la Riviera-Pays-d'Enhaut,VD
+B_2300,Région sans district Valais / Wallis,VS
+B_2301,Bezirk Brig,VS
+B_2302,District de Conthey,VS
+B_2303,District d'Entremont,VS
+B_2304,Bezirk Goms,VS
+B_2305,District d'Hérens,VS
+B_2306,Bezirk Leuk,VS
+B_2307,District de Martigny,VS
+B_2308,District de Monthey,VS
+B_2309,Bezirk Raron,VS
+B_2310,District de Saint-Maurice,VS
+B_2311,District de Sierre,VS
+B_2312,District de Sion,VS
+B_2313,Bezirk Visp,VS
+B_900,Kanton Zug,ZG
+B_100,Bezirksfreies Gebiet Zürich,ZH
+B_101,Bezirk Affoltern,ZH
+B_102,Bezirk Andelfingen,ZH
+B_103,Bezirk Bülach,ZH
+B_104,Bezirk Dielsdorf,ZH
+B_105,Bezirk Hinwil,ZH
+B_106,Bezirk Horgen,ZH
+B_107,Bezirk Meilen,ZH
+B_108,Bezirk Pfäffikon,ZH
+B_109,Bezirk Uster,ZH
+B_110,Bezirk Winterthur,ZH
+B_111,Bezirk Dietikon,ZH
+B_112,Bezirk Zürich,ZH

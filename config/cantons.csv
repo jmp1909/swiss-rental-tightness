@@ -1,0 +1,27 @@
+kt_id,kt_abbr,kt_name_de,grossregion
+1,ZH,Zürich,Zürich
+2,BE,Bern,Espace Mittelland
+3,LU,Luzern,Zentralschweiz
+4,UR,Uri,Zentralschweiz
+5,SZ,Schwyz,Zentralschweiz
+6,OW,Obwalden,Zentralschweiz
+7,NW,Nidwalden,Zentralschweiz
+8,GL,Glarus,Ostschweiz
+9,ZG,Zug,Zentralschweiz
+10,FR,Freiburg,Espace Mittelland
+11,SO,Solothurn,Espace Mittelland
+12,BS,Basel-Stadt,Nordwestschweiz
+13,BL,Basel-Landschaft,Nordwestschweiz
+14,SH,Schaffhausen,Ostschweiz
+15,AR,Appenzell Ausserrhoden,Ostschweiz
+16,AI,Appenzell Innerrhoden,Ostschweiz
+17,SG,St. Gallen,Ostschweiz
+18,GR,Graubünden,Ostschweiz
+19,AG,Aargau,Nordwestschweiz
+20,TG,Thurgau,Ostschweiz
+21,TI,Tessin,Ticino
+22,VD,Waadt,Genferseeregion
+23,VS,Wallis,Genferseeregion
+24,NE,Neuchâtel,Espace Mittelland
+25,GE,Genève,Genferseeregion
+26,JU,Jura,Espace Mittelland
