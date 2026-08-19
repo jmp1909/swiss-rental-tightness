@@ -5,10 +5,11 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from app.lib import charts, queries  # noqa: E402
+from app.lib import charts, queries, ui  # noqa: E402
 
-st.set_page_config(page_title="Cantonal Overview", layout="wide")
-st.title("Cantonal Overview")
+st.set_page_config(page_title="Geographic Overview", layout="wide", initial_sidebar_state="expanded")
+ui.inject_sidebar_toggle_style()
+st.title("Geographic Overview")
 
 vac = queries.vacancy_latest()
 rent = queries.rent_latest()

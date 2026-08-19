@@ -49,7 +49,8 @@ See [`DATA_AUDIT.md`](DATA_AUDIT.md) for exact source URLs, access methods, and 
 
 ## App pages
 
-1. **Cantonal Overview** -- choropleth map + sortable table of the latest snapshot.
+1. **Geographic Overview** -- choropleth map (canton or district toggle) + sortable table of the
+   latest snapshot.
 2. **Market Tightness Composite** -- a heuristic ranking (z-scored vacancy/growth/rent), explicitly
    labeled as a heuristic, not a validated economic index.
 3. **Trends Over Time** -- per-canton time series, canton multiselect.

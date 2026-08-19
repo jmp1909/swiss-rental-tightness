@@ -5,14 +5,15 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from app.lib import queries  # noqa: E402
+from app.lib import queries, ui  # noqa: E402
 
-st.set_page_config(page_title="Swiss Rental Market Tightness", layout="wide")
+st.set_page_config(page_title="Swiss Rental Market Tightness", layout="wide", initial_sidebar_state="expanded")
+ui.inject_sidebar_toggle_style()
 
 st.title("Swiss Rental Market Tightness / Vacancy Risk Dashboard")
 st.caption(
     "Built on official BFS (Federal Statistical Office) cantonal data: vacancy rate, "
-    "rent levels, and population/migration. Use the sidebar to navigate."
+    "rent levels, and population/migration. Use the sidebar (top-left arrow if collapsed) to navigate."
 )
 
 vac = queries.vacancy_latest()
@@ -28,7 +29,7 @@ col4.metric("Latest population year", int(pop["year"].max()))
 st.markdown(
     """
 ### Pages
-- **Cantonal Overview** — latest vacancy rate by canton, on a map and in a sortable table.
+- **Geographic Overview** — latest vacancy rate by canton or district, on a map and in a sortable table.
 - **Market Tightness Composite** — a heuristic ranking combining vacancy, population growth, and rent.
 - **Trends Over Time** — per-canton time series for vacancy, rent, and population.
 - **Canton Detail** — full drill-down into one canton across every loaded metric.

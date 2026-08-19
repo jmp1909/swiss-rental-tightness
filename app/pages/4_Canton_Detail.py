@@ -5,9 +5,10 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from app.lib import charts, queries  # noqa: E402
+from app.lib import charts, queries, ui  # noqa: E402
 
-st.set_page_config(page_title="Canton Detail", layout="wide")
+st.set_page_config(page_title="Canton Detail", layout="wide", initial_sidebar_state="expanded")
+ui.inject_sidebar_toggle_style()
 st.title("Canton Detail")
 
 st.caption(

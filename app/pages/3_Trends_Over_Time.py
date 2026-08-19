@@ -5,9 +5,10 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from app.lib import charts, queries  # noqa: E402
+from app.lib import charts, queries, ui  # noqa: E402
 
-st.set_page_config(page_title="Trends Over Time", layout="wide")
+st.set_page_config(page_title="Trends Over Time", layout="wide", initial_sidebar_state="expanded")
+ui.inject_sidebar_toggle_style()
 st.title("Trends Over Time")
 
 all_cantons = queries.cantons()

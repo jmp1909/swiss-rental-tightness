@@ -5,9 +5,10 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from app.lib import charts, scoring  # noqa: E402
+from app.lib import charts, scoring, ui  # noqa: E402
 
-st.set_page_config(page_title="Market Tightness Composite", layout="wide")
+st.set_page_config(page_title="Market Tightness Composite", layout="wide", initial_sidebar_state="expanded")
+ui.inject_sidebar_toggle_style()
 st.title("Market Tightness Composite")
 
 st.warning(
